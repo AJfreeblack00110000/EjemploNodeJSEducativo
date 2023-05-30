@@ -19,3 +19,8 @@ exports.createToken = function(user) {
     return jwt.encode(payload, claveSecretaInterna); //devolver el token codificado con payload, y clave secreta es codificar
     //los datos con una clave de acceso
 };
+
+
+
+
+
