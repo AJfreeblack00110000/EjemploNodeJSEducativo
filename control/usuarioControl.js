@@ -110,18 +110,21 @@ function actualizarUsuario(req, res) { //PUT
 
 function actualizarFoto(req, res) {
     var UserId = req.params.id;
-    if (req.files) {
+    if (req.files && req.files.image) { // Asegúrate de que req.files.image existe
         var file_path = req.files.image.path;
-        var file_arreglo = file_path.split('\\'); //     cargas\usuario\foto.jpg
-        var file_name = file.split[2];
-        var extension = file_arreglo[2].split('\.');
-        if (extension[1] == 'png' || extension[1] == 'gif' || extension[1] == 'jpg') {
-            usuariosModelo.findByIdAndUpdate(UserId, { imagen: file_arreglo[2] }, (err, user) => {
+        var file_split = file_path.split('\\');
+       
+        var file_name = file_split[2]; // Corrige el nombre de la variable
+        var extension = file_name.split('.');
+        var file_ext = extension[1];
+
+        if (file_ext == 'png' || file_ext == 'gif' || file_ext == 'jpg') {
+            usuariosModelo.findByIdAndUpdate(UserId, { imagen: file_name }, (err, user) => { // Corrige el nombre de la variable
                 if (err) {
-                    res.status(500).send({ mesagge: 'Error al buscar el usuario' });
+                    res.status(500).send({ message: 'Error al buscar el usuario' }); // Corrige la propiedad "mesagge" a "message"
                 }
                 if (!user) {
-                    res.status(404).send({ mesagge: 'Error en el id' });
+                    res.status(404).send({ message: 'Error en el id' }); // Corrige la propiedad "mesagge" a "message"
                 } else {
                     res.status(200).send({
                         image: file_name,
@@ -130,12 +133,13 @@ function actualizarFoto(req, res) {
                 }
             })
         } else {
-            res.status(404).send({ mesagge: 'El formato no es adecuado' });
+            res.status(400).send({ message: 'El formato no es adecuado' }); // Cambia el código de estado a 400 Bad Request
         }
     } else {
-        res.status(404).send({ mesagge: 'No cargo el archivo.....' });
+        res.status(400).send({ message: 'No se cargó el archivo' }); // Cambia el código de estado a 400 Bad Request y corrige la propiedad "mesagge" a "message"
     }
 }
+
 
 function getFoto(req, res) {
     var imageFile = req.params.imageFile;
@@ -151,6 +155,22 @@ function getFoto(req, res) {
 
 }
 
+function eliminarUsuario(req, res) {
+    var UserId = req.params.id;
+
+    usuariosModelo.findByIdAndRemove(UserId, (err, user) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al eliminar el usuario' });
+        } else {
+            if (!user) {
+                res.status(404).send({ message: 'Usuario no encontrado' });
+            } else {
+                res.status(200).send({ message: 'Usuario eliminado correctamente' });
+            }
+        }
+    });
+
+}
 
 module.exports = {
     prueba,
@@ -158,5 +178,6 @@ module.exports = {
     accesoUsuario,
     actualizarUsuario,
     actualizarFoto,
-    getFoto
+    getFoto,
+    eliminarUsuario
 };

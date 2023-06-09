@@ -15,5 +15,6 @@ api.post('/login', usuarioControl.accesoUsuario);
 api.put('/actualizar-usuario/:id', md_auth.validarAcceso, usuarioControl.actualizarUsuario);
 api.post('/actualizar-imagen-usuario/:id', [md_auth.validarAcceso, dir_fotos], usuarioControl.actualizarFoto);
 api.get('/get-imagen-usuario/:imageFile', usuarioControl.getFoto);
+api.delete('/eliminar-usuario/:id', usuarioControl.eliminarUsuario);
 
 module.exports = api;
