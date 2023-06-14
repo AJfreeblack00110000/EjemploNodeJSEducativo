@@ -10,6 +10,7 @@ var dir_fotos = multipart({ uploadDir: './cargas/usuario' });
 
 api.get('/probando-control2', usuarioControl.prueba);
 api.get('/probando-control', md_auth.validarAcceso, usuarioControl.prueba);
+api.get('/consultar-usuario/:id', usuarioControl.consultarUsuario);
 api.post('/registrar', usuarioControl.registrarUsuario);
 api.post('/login', usuarioControl.accesoUsuario);
 api.put('/actualizar-usuario/:id', md_auth.validarAcceso, usuarioControl.actualizarUsuario);

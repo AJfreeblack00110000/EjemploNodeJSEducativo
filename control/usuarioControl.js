@@ -136,7 +136,7 @@ function actualizarFoto(req, res) {
             res.status(400).send({ message: 'El formato no es adecuado' }); // Cambia el código de estado a 400 Bad Request
         }
     } else {
-        res.status(400).send({ message: 'No se cargó el archivo' }); // Cambia el código de estado a 400 Bad Request y corrige la propiedad "mesagge" a "message"
+        res.status(200).send({ message: 'Se cargó el archivo' }); // Cambia el código de estado a 400 Bad Request y corrige la propiedad "mesagge" a "message"
     }
 }
 
@@ -172,6 +172,23 @@ function eliminarUsuario(req, res) {
 
 }
 
+function consultarUsuario(req, res) {
+    var userId = req.params.id;
+
+    usuariosModelo.findById(userId, (err, user) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al consultar el usuario' });
+        } else {
+            if (!user) {
+                res.status(404).send({ message: 'Usuario no encontrado' });
+            } else {
+                res.status(200).send({ user: user });
+            }
+        }
+    });
+}
+
+
 module.exports = {
     prueba,
     registrarUsuario,
@@ -179,5 +196,6 @@ module.exports = {
     actualizarUsuario,
     actualizarFoto,
     getFoto,
-    eliminarUsuario
+    eliminarUsuario,
+    consultarUsuario
 };
